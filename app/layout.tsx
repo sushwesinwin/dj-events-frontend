@@ -4,6 +4,7 @@ import styles from "@/styles/Layout.module.css";
 import "@/styles/globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ShowcaseWrapper from "@/components/ShowcaseWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,9 +38,8 @@ export default function RootLayout({
         className={`${geistSans.className} ${geistMono.className} ${poppins.className} antialiased`}
       >
         <Header />
-        <div className={styles.container}>
-          {children}
-        </div>
+        <ShowcaseWrapper />
+        <div className={styles.container}>{children}</div>
         <Footer />
       </body>
     </html>
