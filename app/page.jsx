@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import EventItem from "@/components/EventItem";
+import Link from "next/link";
 
 async function getEvents() {
   const res = await fetch(
@@ -18,7 +19,7 @@ async function getEvents() {
   return events;
 }
 
-export default async function EventPage() {
+export default async function Homepage() {
   const events = await getEvents();
 
   return (
@@ -26,9 +27,13 @@ export default async function EventPage() {
       <h1>Upcoming Events</h1>
       {events.length === 0 && <h3>No events to show</h3>}
 
-      {events.map((evt) => (
+      {events.slice(0, 3).map((evt) => (
         <EventItem key={evt.id} evt={evt} />
       ))}
+
+      <Link href="/events" className="btn-secondary">
+        View All Events
+      </Link>
     </div>
   );
 }
