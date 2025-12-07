@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import styles from "@/styles/Form.module.css";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function AddForm() {
+  const router = useRouter();
   const [values, setValues] = useState({
     name: "",
     performers: "",
@@ -14,9 +17,35 @@ export default function AddForm() {
     description: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(values);
+
+    // Validation
+    const hasEmptyFields = Object.values(values).some(
+      (element) => element === ""
+    );
+
+    if (hasEmptyFields) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      toast.error(errorData.message || "Something Went Wrong");
+    } else {
+      const evt = await res.json();
+      router.push(`/events/${evt.slug}`);
+      toast.success("Event submitted successfully!");
+    }
   };
 
   const handleInputChange = (

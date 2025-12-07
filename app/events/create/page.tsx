@@ -9,8 +9,9 @@ export const metadata = {
 export default function AddEventsPage() {
   return (
     <div>
-      <Link href={{pathname: "/events"}}>{"<"}Go Back</Link>
+      <Link href={{ pathname: "/events" }}>{"<"}Go Back</Link>
       <h1>Add Events</h1>
+
       <AddForm />
     </div>
   );

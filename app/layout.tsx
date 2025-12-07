@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import styles from "@/styles/Layout.module.css";
 import "@/styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShowcaseWrapper from "@/components/ShowcaseWrapper";
+import { ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +43,7 @@ export default function RootLayout({
         <ShowcaseWrapper />
         <div className={styles.container}>{children}</div>
         <Footer />
+        <ToastContainer />
       </body>
     </html>
   );
