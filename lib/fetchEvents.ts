@@ -1,21 +1,37 @@
 import type { Event } from "@/types/event";
+import qs from "qs";
+import { fetchStrapi } from "./strapi";
 
 export async function fetchAllEvents(): Promise<Event[]> {
-  const res = await fetch(
-    `${
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337"
-    }/api/events?sort=date:asc&populate=*`,
-    { cache: "no-store" }
+  const query = qs.stringify(
+    {
+      populate: "*",
+      sort: ["date:asc"],
+    },
+    { encodeValuesOnly: true }
   );
-  if (!res.ok) throw new Error("Failed to fetch events");
-  const data = await res.json();
 
-  // Map Strapi response structure
-  if (data.data) {
-    return data.data;
-  }
+  const data = await fetchStrapi(`/events?${query}`, { cache: "no-store" });
+  return data.data;
+}
 
-  return data.events || data;
+export async function searchEvents(term: string): Promise<Event[]> {
+  const query = qs.stringify(
+    {
+      populate: "*",
+      filters: {
+        $or: [
+          { name: { $containsi: term } },
+          { performers: { $containsi: term } },
+          { description: { $containsi: term } },
+        ],
+      },
+    },
+    { encodeValuesOnly: true }
+  );
+
+  const data = await fetchStrapi(`/events?${query}`, { cache: "no-store" });
+  return data.data;
 }
 
 export async function fetchEventBySlug(slug: string): Promise<Event | null> {

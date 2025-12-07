@@ -2,7 +2,7 @@ import styles from "@/styles/EventItem.module.css";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function EventItem({ evt }) {
+export default function EventItem({ evt, query }) {
   return (
     <div className={styles.event}>
       <div className={styles.img}>
@@ -26,7 +26,7 @@ export default function EventItem({ evt }) {
       </div>
 
       <div className={styles.link}>
-        <Link href={`/events/${evt.slug}`} className="btn">
+        <Link href={`/events/${evt.slug}?${query}`} className="btn">
           Details
         </Link>
       </div>
