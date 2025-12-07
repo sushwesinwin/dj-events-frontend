@@ -12,11 +12,11 @@ export default function EventControls({ eventId }: { eventId: string }) {
 
   return (
     <div className={styles.controls}>
-      <Link href={`/events/edit/${eventId}`}>
+      <Link href={{pathname: `/events/edit/${eventId}`}}>
         <FaPencilAlt /> Edit Event
       </Link>
       <Link
-        href={`/events/delete/${eventId}`}
+        href={{pathname: `/events/delete/${eventId}`}}
         className={styles.delete}
         onClick={deleteEvent}
       >
