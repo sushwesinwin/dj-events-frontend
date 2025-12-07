@@ -6,7 +6,7 @@ export interface Event {
   time: string;
   venue: string;
   slug: string;
-  image: string;
+  image: any;
   performers: string;
   address: string;
 }

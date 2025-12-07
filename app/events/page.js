@@ -1,25 +1,10 @@
 import { notFound } from "next/navigation";
 import EventItem from "@/components/EventItem";
 
-async function getEvents() {
-  const res = await fetch(
-    `${process.env.API_URL || "http://localhost:3000"}/api/events`,
-    { cache: "no-store" }
-  );
-
-  if (!res.ok) {
-    notFound();
-  }
-
-  const data = await res.json();
-  const events = data.events || [];
-  console.log(events);
-
-  return events;
-}
+import { fetchAllEvents } from "@/lib/fetchEvents";
 
 export default async function EventPage() {
-  const events = await getEvents();
+  const events = await fetchAllEvents();
 
   return (
     <div>

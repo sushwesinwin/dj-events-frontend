@@ -40,21 +40,38 @@ export default async function EventDetailPage({
       <EventControls eventId={event.id} />
 
       <span>
-        {event.date} at {event.time}
+        {new Date(event.date).toLocaleDateString("en-US")} at {event.time}
       </span>
       <h1>{event.name}</h1>
 
       {event.image && (
         <div className={styles.image}>
-          <Image src={event.image} alt={event.name} width={960} height={600} />
+          <Image
+            src={
+              event.image.formats?.large?.url ||
+              event.image.formats?.medium?.url ||
+              event.image.url
+            }
+            alt={event.name}
+            width={960}
+            height={600}
+          />
         </div>
       )}
 
       <h3>Performers:</h3>
       <p>{event.performers}</p>
       <h3>Description:</h3>
-      <p>{event.description}</p>
-      <h3>Venue: {event.venue}</h3>
+      {Array.isArray(event.description) ? (
+        event.description.map((block: any, index: number) => (
+          <p key={index}>
+            {block.children?.map((child: any) => child.text).join("")}
+          </p>
+        ))
+      ) : (
+        <p>{event.description}</p>
+      )}
+      <h3>Venue: {event.venue || event.venue}</h3>
       <p>{event.address}</p>
 
       <Link href="/events">

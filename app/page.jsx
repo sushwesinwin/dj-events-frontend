@@ -4,7 +4,9 @@ import Link from "next/link";
 
 async function getEvents() {
   const res = await fetch(
-    `${process.env.API_URL || "http://localhost:3000"}/api/events`,
+    `${
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337"
+    }/api/events?sort=date:asc&pagination[limit]=3&populate=*`,
     { cache: "no-store" }
   );
 
@@ -13,10 +15,15 @@ async function getEvents() {
   }
 
   const data = await res.json();
-  const events = data.events || [];
-  console.log(events);
 
-  return events;
+  // Map Strapi response
+  if (data.data) {
+    const events = data.data;
+    console.log(events);
+    return events;
+  }
+
+  return [];
 }
 
 export default async function Homepage() {
@@ -27,7 +34,7 @@ export default async function Homepage() {
       <h1>Upcoming Events</h1>
       {events.length === 0 && <h3>No events to show</h3>}
 
-      {events.slice(0, 3).map((evt) => (
+      {events.map((evt) => (
         <EventItem key={evt.id} evt={evt} />
       ))}
 
