@@ -37,7 +37,7 @@ export async function searchEvents(term: string): Promise<Event[]> {
 export async function fetchEventBySlug(slug: string): Promise<Event | null> {
   const res = await fetch(
     `${
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337"
+      process.env.API_URL || "http://localhost:1337"
     }/api/events?filters[slug][$eq]=${slug}&populate=*`,
     { cache: "no-store" }
   );

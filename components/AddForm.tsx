@@ -30,20 +30,33 @@ export default function AddForm() {
       return;
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
+    // Generate slug from event name
+    const slug = values.name
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "") // Remove special characters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+      .trim();
+
+    const res = await fetch(
+      `${process.env.API_URL || "http://localhost:1337"}/api/events`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: { ...values, slug } }),
+      }
+    );
 
     if (!res.ok) {
       const errorData = await res.json();
-      toast.error(errorData.message || "Something Went Wrong");
+      console.error("Error creating event:", errorData);
+      toast.error(errorData.error?.message || "Something Went Wrong");
     } else {
       const evt = await res.json();
-      router.push(`/events/${evt.slug}`);
+      console.log("Event created:", evt);
+      router.push(`/events/${evt.data.slug}`);
       toast.success("Event submitted successfully!");
     }
   };

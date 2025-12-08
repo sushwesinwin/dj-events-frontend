@@ -71,10 +71,10 @@ export default async function EventDetailPage({
       ) : (
         <p>{event.description}</p>
       )}
-      <h3>Venue: {event.venue || event.venue}</h3>
+      <h3>Venue: {event.venue}</h3>
       <p>{event.address}</p>
 
-      <Link href={{ pathname: '/events' }}>
+      <Link href={{ pathname: "/events" }}>
         <button className={styles.back}>{"<"} Go Back</button>
       </Link>
     </div>

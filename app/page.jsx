@@ -23,7 +23,7 @@ export default async function Homepage() {
 async function getEvents() {
   const res = await fetch(
     `${
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337"
+      process.env.API_URL || "http://localhost:1337"
     }/api/events?sort=date:asc&pagination[limit]=3&populate=*`,
     { cache: "no-store" }
   );
